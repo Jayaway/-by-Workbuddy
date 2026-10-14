@@ -3,6 +3,7 @@
 流程：关键词 → Unsplash 抓取 → 上传到微信永久素材 → 返回微信 CDN URL
 """
 
+import hashlib
 import logging
 import os
 import re
@@ -10,7 +11,6 @@ import tempfile
 import time
 from pathlib import Path
 from typing import Optional
-from urllib.parse import quote
 
 import requests
 
@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 # 微信上传图片到图文消息素材接口（返回 URL，可直接嵌入 content）
 WECHAT_UPLOAD_IMG_URL = "https://api.weixin.qq.com/cgi-bin/media/uploadimg"
 
-# Unsplash 免费图片（不需要 API Key，直接通过 source.unsplash.com 随机取图）
-UNSPLASH_SOURCE = "https://source.unsplash.com/featured/900x500/?{keywords}"
+# Picsum 免费图片（不需要 API Key，按关键词种子确定性取图）
+PICSUM_SEED_URL = "https://picsum.photos/seed/{seed}/900/500"
 
 # 备用：Picsum（纯随机，无关键词）
 PICSUM_URL = "https://picsum.photos/900/500?random={seed}"
@@ -28,12 +28,13 @@ PICSUM_URL = "https://picsum.photos/900/500?random={seed}"
 
 def fetch_image_bytes(keyword: str, index: int = 0) -> Optional[bytes]:
     """
-    按关键词从 Unsplash 抓取一张图片，返回原始字节。
+    按关键词从外网免费图库 Picsum 抓取一张图片，返回原始字节。
     失败时返回 None。
     """
-    # 关键词转英文（简单映射）
+    # 关键词转英文（简单映射），用 md5 生成稳定种子，保证同一关键词图一致
     kw_en = _translate_keyword(keyword)
-    url = UNSPLASH_SOURCE.format(keywords=quote(kw_en))
+    seed = hashlib.md5(kw_en.encode("utf-8")).hexdigest()[:12]
+    url = PICSUM_SEED_URL.format(seed=seed)
 
     try:
         resp = requests.get(url, timeout=15, allow_redirects=True)
@@ -41,14 +42,14 @@ def fetch_image_bytes(keyword: str, index: int = 0) -> Optional[bytes]:
             logger.info(f"图片抓取成功：{keyword} ({len(resp.content)//1024}KB)")
             return resp.content
     except Exception as e:
-        logger.warning(f"Unsplash 抓取失败 ({keyword}): {e}")
+        logger.warning(f"Picsum 抓取失败 ({keyword}): {e}")
 
     # fallback：picsum 随机图
     try:
-        seed = abs(hash(keyword)) % 1000 + index
-        resp = requests.get(PICSUM_URL.format(seed=seed), timeout=15, allow_redirects=True)
+        random_seed = abs(hash(keyword)) % 1000 + index
+        resp = requests.get(PICSUM_URL.format(seed=random_seed), timeout=15, allow_redirects=True)
         if resp.status_code == 200 and len(resp.content) > 10000:
-            logger.info(f"使用 Picsum 备用图片 (seed={seed})")
+            logger.info(f"使用 Picsum 备用图片 (seed={random_seed})")
             return resp.content
     except Exception as e:
         logger.warning(f"Picsum 备用也失败: {e}")

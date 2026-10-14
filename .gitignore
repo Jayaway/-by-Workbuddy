@@ -1,0 +1,20 @@
+# 环境变量与密钥
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 运行时生成的目录与文件
+drafts/
+covers/
+history/
+logs/
+sun_drafts/
+sun_transcripts/
+sun_progress.json
+*.log
+
+# macOS
+.DS_Store

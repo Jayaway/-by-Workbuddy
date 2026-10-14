@@ -2,22 +2,32 @@
 
 自动化抓取科技资讯、AI 生成文章并推送到微信公众号草稿箱。
 
+> 当前版本：**1.1.0**
+
+## 更新日志
+
+- **1.1.0**：封面图与配图改为从外网免费图库 Picsum 抓取（按关键词种子确定性取图），移除对已下线 `source.unsplash.com` 的依赖；补全缺失模块、修复 import 路径。
+
 ## 项目结构
 
 ```
 wechat-bot/
-├── config.py              # 主配置文件
-├── main.py                # 主入口（定时任务）
-├── article_generator.py  # AI 文章生成
-├── wechat_publisher.py    # 微信 API 推送
-├── news_fetcher.py        # 资讯采集
-├── cover_generator.py     # 封面图生成
-├── image_uploader.py      # 图片上传
-├── sun_pipeline.py        # 孙宇晨系列自动发布
-├── drafts/                # 草稿目录
-├── covers/                # 封面图目录
-├── history/               # 发布历史
-└── logs/                  # 日志目录
+├── config.py                  # 主配置文件（含版本号 __version__）
+├── main.py                    # 主入口（定时任务）
+├── modules/
+│   ├── article_generator.py   # AI 文章生成
+│   ├── wechat_publisher.py    # 微信 API 推送
+│   ├── news_fetcher.py        # 资讯采集
+│   ├── cover_generator.py     # 封面图（外网免费图库抓取）
+│   ├── image_uploader.py      # 图片配图 + 上传
+│   ├── history_manager.py     # 发布历史记录
+│   ├── upload_cover.py        # 封面上传（thumb_media_id）
+│   ├── audio_manager.py       # 音频上传（孙宇晨系列）
+│   └── sun_pipeline.py        # 孙宇晨系列自动发布
+├── drafts/                    # 草稿目录
+├── covers/                    # 封面图目录
+├── history/                   # 发布历史
+└── logs/                      # 日志目录
 ```
 
 ## 环境配置

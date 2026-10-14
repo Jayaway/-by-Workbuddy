@@ -20,6 +20,7 @@ from typing import Dict
 # ── 路径设置 ──────────────────────────────────
 BASE_DIR = Path(__file__).parent
 sys.path.insert(0, str(BASE_DIR))
+sys.path.insert(0, str(BASE_DIR / "modules"))
 
 # 自动加载 .env 文件（含 WECHAT_THUMB_MEDIA_ID 等配置）
 _env_file = BASE_DIR / ".env"
@@ -31,14 +32,13 @@ if _env_file.exists():
             os.environ.setdefault(_k.strip(), _v.strip())
 
 from config import (
-    WECHAT_APP_ID, WECHAT_APP_SECRET,
+    WECHAT_APP_ID, WECHAT_APP_SECRET, __version__,
     SCHEDULE_LABELS, HISTORY_FILE, LOG_DIR, DRAFT_DIR, DEDUP_DAYS
 )
 from news_fetcher import fetch_all_news
 from article_generator import generate_article
 from wechat_publisher import publish_article_to_draft
 from history_manager import get_recent_topics, append_record
-from wechatsync_publisher import sync_after_wechat
 from cover_generator import generate_cover_with_fallback
 from upload_cover import upload_thumb
 
@@ -104,7 +104,7 @@ def main():
 
     setup_logging(slot)
     logger = logging.getLogger("main")
-    logger.info(f"========== 深度观察者启动 | 时段：{time_label} ==========")
+    logger.info(f"========== 深度观察者 v{__version__} 启动 | 时段：{time_label} ==========")
 
     # 1. 采集资讯
     news_items = fetch_all_news()

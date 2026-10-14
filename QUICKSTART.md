@@ -93,7 +93,7 @@ python3 main.py --slot morning
 | `modules/article_generator.py` | AI 文章生成（支持 Claude/MiniMax） |
 | `modules/wechat_publisher.py` | 微信公众号 API 封装 |
 | `modules/news_fetcher.py` | 资讯采集爬虫 |
-| `modules/cover_generator.py` | 封面图 AI 生成 |
+| `modules/cover_generator.py` | 封面图（外网免费图库 Picsum 抓取，无需 AI） |
 | `modules/image_uploader.py` | 图片上传到微信图床 |
 | `modules/sun_pipeline.py` | 孙宇晨系列音频转文章工作流 |
 

@@ -45,6 +45,8 @@ if _env_file.exists():
             _k, _v = _line.split("=", 1)
             os.environ.setdefault(_k.strip(), _v.strip())
 
+PROJECT_ROOT = BASE_DIR.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(BASE_DIR))
 from config import WECHAT_APP_ID, WECHAT_APP_SECRET
 from wechat_publisher import get_access_token, push_to_draft, markdown_to_wechat_html

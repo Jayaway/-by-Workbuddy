@@ -6,7 +6,7 @@ import logging
 import time
 import random
 from datetime import datetime, timedelta
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import requests
 from bs4 import BeautifulSoup
@@ -23,7 +23,7 @@ HEADERS = {
 }
 
 
-def _get(url: str, timeout: int = 10) -> requests.Response | None:
+def _get(url: str, timeout: int = 10) -> Optional[requests.Response]:
     """带错误处理的 GET 请求"""
     try:
         resp = requests.get(url, headers=HEADERS, timeout=timeout)
