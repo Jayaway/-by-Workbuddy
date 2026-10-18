@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-深度观察者 - 主调度脚本
+微信公众号自动化 - 主调度脚本
 用法：
   python3 main.py                   # 立即执行一次（自动判断当前时段）
   python3 main.py --slot morning    # 指定时段：morning / noon / evening
@@ -87,7 +87,7 @@ def save_draft_locally(article: Dict, slot: str) -> str:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="深度观察者 - 自动发文机器人")
+    parser = argparse.ArgumentParser(description="微信公众号自动化 - 自动发文机器人")
     parser.add_argument("--slot", choices=["morning", "noon", "evening"],
                         help="指定运行时段（默认自动判断）")
     parser.add_argument("--content-type", 
@@ -104,7 +104,7 @@ def main():
 
     setup_logging(slot)
     logger = logging.getLogger("main")
-    logger.info(f"========== 深度观察者 v{__version__} 启动 | 时段：{time_label} ==========")
+    logger.info(f"========== 微信公众号自动化 v{__version__} 启动 | 时段：{time_label} ==========")
 
     # 1. 采集资讯
     news_items = fetch_all_news()
@@ -198,7 +198,7 @@ def main():
     title_text = result['title']
     subprocess.run([
         "osascript", "-e",
-        f'display notification "草稿已推送，请前往各平台发布" with title "深度观察者" subtitle "{title_text}"'
+        f'display notification "草稿已推送，请前往各平台发布" with title "微信公众号自动化" subtitle "{title_text}"'
     ], capture_output=True)
 
     # 8. 同步到知乎 & 雪球（已禁用，用户手动同步）

@@ -328,7 +328,7 @@ def push_to_wechat(article: dict, thumb_media_id: str = "") -> dict:
     media_id = push_to_draft(
         WECHAT_APP_ID, WECHAT_APP_SECRET,
         article["title"], content_html,
-        author="深度观察者",
+        author="微信公众号自动化",
         digest=digest,
         thumb_media_id=thumb_media_id,
     )

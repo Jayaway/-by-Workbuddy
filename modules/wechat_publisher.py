@@ -128,7 +128,7 @@ def push_to_draft(
     app_secret: str,
     title: str,
     content_html: str,
-    author: str = "深度观察者",
+    author: str = "微信公众号自动化",
     digest: str = "",
     thumb_media_id: str = "",
 ) -> str:
