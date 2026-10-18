@@ -4,6 +4,8 @@
 
 # 项目版本号
 __version__ = "1.1.1"
+
+import os
 # AI 后端配置（二选一）：
 #
 # 方式1：设置环境变量（推荐，不要把 key 写死在代码里）
@@ -21,12 +23,13 @@ __version__ = "1.1.1"
 
 # 微信公众号凭证（从微信公众号后台获取）
 # 登录 https://mp.weixin.qq.com/ -> 设置与开发 -> 基本配置
-WECHAT_APP_ID = "your_wechat_app_id"
-WECHAT_APP_SECRET = "your_wechat_app_secret"
+# 优先从环境变量 / .env 读取，避免把密钥提交到仓库
+WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "your_wechat_app_id")
+WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "your_wechat_app_secret")
 
 # 封面图素材 ID（需要先上传封面图到微信公众号素材库获取）
 # 在公众号后台：新建图文消息 -> 上传封面 -> 获取 media_id
-WECHAT_THUMB_MEDIA_ID = "your_thumb_media_id"
+WECHAT_THUMB_MEDIA_ID = os.environ.get("WECHAT_THUMB_MEDIA_ID", "your_thumb_media_id")
 
 # 公众号名称
 ACCOUNT_NAME = "微信公众号自动化"
